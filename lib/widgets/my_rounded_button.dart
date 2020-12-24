@@ -22,10 +22,12 @@ class MyRoundedButton extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
           padding: EdgeInsets.all(20.0),
           decoration: BoxDecoration(
-              border: Border.all(
-                color: color,
-                width: 2.0,
-              ),
+              border: outline
+                  ? Border.all(
+                      color: color,
+                      width: 2.0,
+                    )
+                  : null,
               color: disabled
                   ? Colors.grey[400]
                   : outline
