@@ -6,6 +6,7 @@ import 'package:ecommerce_app/screens/cart_screen.dart';
 import 'package:ecommerce_app/screens/login_screen.dart';
 import 'package:ecommerce_app/screens/orders_screen.dart';
 import 'package:ecommerce_app/screens/product_detail.dart';
+import 'package:ecommerce_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import './screens//product_overview.dart';
@@ -36,8 +37,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider.value(
               value: Cart(),
             ),
-            ChangeNotifierProvider.value(
-              value: Orders(),
+            ChangeNotifierProxyProvider<Auth, Orders>(
+              update: (ctx, auth, prevOrders) => Orders(
+                  auth.token, prevOrders == null ? [] : prevOrders.orders),
             ),
           ],
           child: SafeArea(
@@ -47,7 +49,16 @@ class MyApp extends StatelessWidget {
                 theme: ThemeData(
                   fontFamily: 'Ubuntu',
                 ),
-                home: auth.isAuth ? ProductOverviewScreen() : LoginScreen(),
+                home: auth.isAuth
+                    ? ProductOverviewScreen()
+                    : FutureBuilder(
+                        future: auth.tryAutoLogin(),
+                        builder: (ctx, authSnapShot) =>
+                            authSnapShot.connectionState ==
+                                    ConnectionState.waiting
+                                ? SplashScreen()
+                                : LoginScreen(),
+                      ),
                 routes: {
                   ProductDetailScreen.routename: (context) =>
                       ProductDetailScreen(),
