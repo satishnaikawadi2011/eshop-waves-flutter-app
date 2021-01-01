@@ -22,44 +22,43 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => Products(),
       child: MediaQuery(
-        data: MediaQueryData(),
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider.value(
-              value: Products(),
-            ),
-            ChangeNotifierProvider.value(
-              value: Categories(),
-            ),
-            ChangeNotifierProvider.value(
-              value: Cart(),
-            ),
-            ChangeNotifierProvider.value(
-              value: Orders(),
-            ),
-            ChangeNotifierProvider.value(
-              value: Auth(),
-            )
-          ],
-          child: SafeArea(
-            child: MaterialApp(
-              title: 'EShop Waves',
-              theme: ThemeData(
-                fontFamily: 'Ubuntu',
+          data: MediaQueryData(),
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(
+                value: Products(),
               ),
-              routes: {
-                ProductDetailScreen.routename: (context) =>
-                    ProductDetailScreen(),
-                ProductOverviewScreen.routename: (context) =>
-                    ProductOverviewScreen(),
-                // '/': (context) => LoginScreen(),
-                CartScreen.routeName: (context) => CartScreen(),
-                OrdersScreen.routeName: (context) => OrdersScreen(),
-              },
+              ChangeNotifierProvider.value(
+                value: Categories(),
+              ),
+              ChangeNotifierProvider.value(
+                value: Cart(),
+              ),
+              ChangeNotifierProvider.value(
+                value: Orders(),
+              ),
+              ChangeNotifierProvider.value(
+                value: Auth(),
+              )
+            ],
+            child: SafeArea(
+              child: Consumer<Auth>(
+                builder: (ctx, auth, _) => MaterialApp(
+                  title: 'EShop Waves',
+                  theme: ThemeData(
+                    fontFamily: 'Ubuntu',
+                  ),
+                  home: auth.isAuth ? ProductOverviewScreen() : LoginScreen(),
+                  routes: {
+                    ProductDetailScreen.routename: (context) =>
+                        ProductDetailScreen(),
+                    CartScreen.routeName: (context) => CartScreen(),
+                    OrdersScreen.routeName: (context) => OrdersScreen(),
+                  },
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }
