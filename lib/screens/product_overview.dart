@@ -17,6 +17,10 @@ class ProductOverviewScreen extends StatefulWidget {
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var _isLoading = false;
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(context).fetchAndSetProducts();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -73,17 +77,20 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 color: Colors.teal,
               ),
             )
-          : Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: CategoryList(),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: ProductsGrid(),
-                ),
-              ],
+          : RefreshIndicator(
+              onRefresh: () => _refreshProducts(context),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: CategoryList(),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: ProductsGrid(),
+                  ),
+                ],
+              ),
             ),
     );
   }
