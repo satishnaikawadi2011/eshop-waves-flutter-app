@@ -31,7 +31,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     try {
-      final url = "https://eshopadminapp.herokuapp.com/api/order";
+      final url = "https://eshopadminapp.herokuapp.com/api/order/me";
       Map<String, String> headers = {'Authorization': 'Bearer $authToken'};
       final response = await http.get(url, headers: headers);
       final extractedData = json.decode(response.body);
