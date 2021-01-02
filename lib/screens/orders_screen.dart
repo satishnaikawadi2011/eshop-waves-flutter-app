@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:ecommerce_app/providers/order_provider.dart' show Orders;
 import 'package:ecommerce_app/widgets/app_drawer.dart';
 import 'package:ecommerce_app/widgets/order_item.dart';
@@ -45,11 +47,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   color: Colors.teal,
                 ),
               )
-            : ListView.builder(
-                itemBuilder: (ctx, i) => OrderItem(
-                  orderItem: orderData.orders.reversed.toList()[i],
-                ),
-                itemCount: orderData.orders.length,
-              ));
+            : orderData.orders.length == 0
+                ? Center(
+                    child: Text("No orders found !!"),
+                  )
+                : ListView.builder(
+                    itemBuilder: (ctx, i) => OrderItem(
+                      orderItem: orderData.orders.reversed.toList()[i],
+                    ),
+                    itemCount: orderData.orders.length,
+                  ));
   }
 }
