@@ -7,8 +7,23 @@ import 'package:ecommerce_app/widgets/my_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static String routeName = 'cart_screen';
+
+  @override
+  _CartScreenState createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    Future.delayed(Duration.zero).then((_) {
+      Provider.of<Cart>(context, listen: false).getDataFromPrefs();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);

@@ -36,6 +36,9 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         });
       });
     });
+    Future.delayed(Duration.zero).then((_) {
+      Provider.of<Cart>(context, listen: false).getDataFromPrefs();
+    });
     super.initState();
   }
 
@@ -49,19 +52,17 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           style: TextStyle(fontFamily: 'Ubuntu'),
         ),
         actions: <Widget>[
-          Consumer<Cart>(
-            builder: (context, cart, child) => Badge(
-              badgeContent: Text(
-                cart.itemCount.toString(),
-                style: TextStyle(color: Colors.white),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(CartScreen.routeName);
-                },
-                child: Icon(
-                  Icons.shopping_cart,
-                ),
+          Badge(
+            badgeContent: Text(
+              Provider.of<Cart>(context).itemCount.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+              child: Icon(
+                Icons.shopping_cart,
               ),
             ),
           ),

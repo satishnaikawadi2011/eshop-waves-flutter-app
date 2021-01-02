@@ -11,13 +11,12 @@ class Products with ChangeNotifier {
   Products(this.authToken, this._items);
   Future<void> fetchAndSetProducts() async {
     try {
-      // print(authToken);
       final url = "https://eshopadminapp.herokuapp.com/api/product";
       Map<String, String> headers = {'Authorization': 'Bearer $authToken'};
       final response = await http.get(url, headers: headers);
       final extractedData = json.decode(response.body);
       if (extractedData is List<dynamic>) {
-        print(extractedData);
+        // print(extractedData);
         final List<Product> loadedProducts = [];
         extractedData.forEach((prod) {
           loadedProducts.add(Product(
@@ -117,8 +116,8 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  void addProduct() {
-    // _items.add(value)
-    notifyListeners();
-  }
+  // void addProduct() {
+  //   // _items.add(value)
+  //   notifyListeners();
+  // }
 }

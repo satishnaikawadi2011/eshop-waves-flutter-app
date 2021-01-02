@@ -17,7 +17,7 @@ class Categories with ChangeNotifier {
       final response = await http.get(url, headers: headers);
       final extractedData = json.decode(response.body);
       if (extractedData is List<dynamic>) {
-        print(extractedData);
+        // print(extractedData);
         final List<Category> loadedCats = [
           Category(
             id: 'c6',
