@@ -36,19 +36,26 @@ class Orders with ChangeNotifier {
       final extractedData = json.decode(response.body);
       if (extractedData is List<dynamic>) {
         print(extractedData);
-        final List<OrderItem> loadedProducts = [];
-        // extractedData.forEach((prod) {
-        //   loadedProducts.add(Product(
-        //       id: prod['_id'],
-        //       description: prod['description'],
-        //       image: 'https://eshopadminapp.herokuapp.com${prod['image']}',
-        //       price: prod['price'],
-        //       title: prod['title'],
-        //       categoryId: prod['categoryId']));
-        // });
-        // _items = loadedProducts;
+        final List<OrderItem> loadedOrders = [];
+        extractedData.forEach((order) {
+          final List<CartItem> convertedProducts = [];
+          order['orderItems'].forEach((item) {
+            convertedProducts.add(CartItem(
+                id: item['productId'],
+                image: 'https://eshopadminapp.herokuapp.com${item['image']}',
+                price: item['price'],
+                title: item['title'],
+                quantity: item['qty']));
+          });
+          loadedOrders.add(OrderItem(
+              amount: order['amount'],
+              dateTime: DateTime.parse(order['createdAt']),
+              id: order['_id'],
+              products: convertedProducts,
+              status: order['status']));
+        });
+        _orders = loadedOrders;
         notifyListeners();
-        // print("here");
       } else {
         throw HttpException(extractedData['message']);
       }
