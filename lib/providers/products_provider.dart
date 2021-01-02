@@ -29,7 +29,6 @@ class Products with ChangeNotifier {
         });
         _items = loadedProducts;
         notifyListeners();
-        // print("here");
       } else {
         throw HttpException(extractedData['message']);
       }

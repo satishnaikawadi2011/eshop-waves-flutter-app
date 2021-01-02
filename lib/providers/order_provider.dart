@@ -3,6 +3,7 @@ import 'package:ecommerce_app/models/http_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 
 class OrderItem {
   final String id;
@@ -64,16 +65,42 @@ class Orders with ChangeNotifier {
     }
   }
 
-  void addOrder(List<CartItem> cartProducts, int total) async {
-    // final url = 'https://eshopadminapp.herokuapp.com/api/order/add';
-    // Map<String, String> headers = {'Authorization': 'Bearer $authToken'};
-    // final response = await http.post(url, headers: headers);
+  Future<void> addOrder(List<CartItem> cartProducts, int total) async {
+    final url = 'https://eshopadminapp.herokuapp.com/api/order/add';
+    Map<String, String> headers = {
+      'Authorization': 'Bearer $authToken',
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+    final convertedCartProds = [];
+    cartProducts.forEach((element) {
+      convertedCartProds.add({
+        'price': element.price,
+        'productId': element.id,
+        'title': element.title,
+        'image': element.image.split(".com")[1],
+        'qty': element.quantity
+      });
+    });
+    // print(convertedCartProds);
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium);
+    final Map<String, dynamic> body = {
+      'latitude': position.latitude,
+      'longitude': position.longitude,
+      'amount': total,
+      'orderItems': [...convertedCartProds]
+    };
+    // print(position);
+    final response =
+        await http.post(url, body: json.encode(body), headers: headers);
+    final res = json.decode(response.body);
     _orders.insert(
         0,
         OrderItem(
             amount: total,
-            dateTime: DateTime.now(),
-            id: DateTime.now().toString(),
+            dateTime: DateTime.parse(res['createdAt']),
+            id: res['_id'],
             products: cartProducts));
   }
 }

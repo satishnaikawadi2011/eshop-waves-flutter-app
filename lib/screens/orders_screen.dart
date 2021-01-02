@@ -2,6 +2,7 @@ import 'package:ecommerce_app/providers/order_provider.dart' show Orders;
 import 'package:ecommerce_app/widgets/app_drawer.dart';
 import 'package:ecommerce_app/widgets/order_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -12,11 +13,19 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
+  var _isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
     Future.delayed(Duration.zero).then((_) {
-      Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+      setState(() {
+        _isLoading = true;
+      });
+      return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+    }).then((value) {
+      setState(() {
+        _isLoading = false;
+      });
     });
     super.initState();
   }
@@ -30,11 +39,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
           backgroundColor: Colors.teal,
         ),
         drawer: AppDrawer(),
-        body: ListView.builder(
-          itemBuilder: (ctx, i) => OrderItem(
-            orderItem: orderData.orders[i],
-          ),
-          itemCount: orderData.orders.length,
-        ));
+        body: _isLoading
+            ? Center(
+                child: SpinKitFadingCircle(
+                  color: Colors.teal,
+                ),
+              )
+            : ListView.builder(
+                itemBuilder: (ctx, i) => OrderItem(
+                  orderItem: orderData.orders.reversed.toList()[i],
+                ),
+                itemCount: orderData.orders.length,
+              ));
   }
 }

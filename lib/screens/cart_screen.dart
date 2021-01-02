@@ -5,6 +5,7 @@ import 'package:ecommerce_app/widgets/CartItemTile.dart';
 import 'package:ecommerce_app/widgets/my_rounded_button.dart';
 import 'package:ecommerce_app/widgets/my_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  var _isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -54,10 +56,16 @@ class _CartScreenState extends State<CartScreen> {
                 MyRoundedButton(
                   color: Colors.pink[300],
                   label: "CHECKOUT",
-                  onPress: () {
-                    checkoutOrder(context, cart);
+                  onPress: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    await checkoutOrder(context, cart);
+                    setState(() {
+                      _isLoading = false;
+                    });
                   },
-                  disabled: isCartEmpty,
+                  disabled: isCartEmpty || _isLoading,
                 )
               ],
             ),
@@ -87,7 +95,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void checkoutOrder(BuildContext context, Cart cart) {
+  Future<void> checkoutOrder(BuildContext context, Cart cart) {
     var alertDialog = AlertDialog(
       title: Text("CHEKOUT ORDER"),
       titleTextStyle: TextStyle(
@@ -98,11 +106,12 @@ class _CartScreenState extends State<CartScreen> {
       ),
       actions: <Widget>[
         FlatButton(
-          onPressed: () {
-            Provider.of<Orders>(context, listen: false)
+          onPressed: () async {
+            Navigator.of(context).pop();
+            await Provider.of<Orders>(context, listen: false)
                 .addOrder(cart.items.values.toList(), cart.totalAmount);
             cart.clearCart();
-            Navigator.of(context).pop();
+            Navigator.of(context).pushReplacementNamed('/');
           },
           child: Text(
             "Confirm",
