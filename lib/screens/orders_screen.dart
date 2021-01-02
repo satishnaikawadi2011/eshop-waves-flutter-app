@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:ecommerce_app/providers/order_provider.dart' show Orders;
 import 'package:ecommerce_app/widgets/app_drawer.dart';
 import 'package:ecommerce_app/widgets/order_item.dart';
