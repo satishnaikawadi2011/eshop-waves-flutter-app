@@ -79,7 +79,6 @@ class ProductDetailScreen extends StatelessWidget {
                 label: "ADD TO CART",
                 color: Colors.pink[300],
                 onPress: () {
-                  // print("Added to cart!");
                   addToCart(productId, loadedProduct.title, loadedProduct.price,
                       loadedProduct.image);
                   Scaffold.of(context).showSnackBar(snackBar);

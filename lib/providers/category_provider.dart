@@ -17,7 +17,6 @@ class Categories with ChangeNotifier {
       final response = await http.get(url, headers: headers);
       final extractedData = json.decode(response.body);
       if (extractedData is List<dynamic>) {
-        // print(extractedData);
         final List<Category> loadedCats = [
           Category(
             id: 'c6',
@@ -29,7 +28,6 @@ class Categories with ChangeNotifier {
         });
         _categories = loadedCats;
         notifyListeners();
-        // print("here");
       } else {
         throw HttpException(extractedData['message']);
       }
@@ -37,37 +35,6 @@ class Categories with ChangeNotifier {
       throw e;
     }
   }
-
-  //  = [
-  // Category(
-  //   id: 'c6',
-  //   name: 'All',
-  // ),
-  // Category(
-  //   id: 'c1',
-  //   name: 'Men\'s Clothing',
-  // ),
-  // Category(
-  //   id: 'c2',
-  //   name: 'Men\'s Footwear',
-  // ),
-  // Category(
-  //   id: 'c3',
-  //   name: 'Watches',
-  // ),
-  // Category(
-  //   id: 'c4',
-  //   name: 'Mobiles and Accesssories',
-  // ),
-  // Category(
-  //   id: 'c5',
-  //   name: 'Bags',
-  // ),
-  // Category(
-  //   id: 'c7',
-  //   name: 'Others',
-  // ),
-  // ];
 
   List<Category> get categories {
     return [..._categories];

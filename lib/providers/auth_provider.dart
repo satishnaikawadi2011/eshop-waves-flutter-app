@@ -21,7 +21,6 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    print(_expiryDate);
     if (_expiryDate != null &&
         _expiryDate.isAfter(DateTime.now()) &&
         _token != null) {
@@ -46,7 +45,6 @@ class Auth with ChangeNotifier {
       if (res['message'] != null) {
         throw HttpException(res['message']);
       } else {
-        print(res);
         final tokenIn = res['token'];
         Map<String, dynamic> decodedToken = JwtDecoder.decode(tokenIn);
         _token = tokenIn;
@@ -77,7 +75,6 @@ class Auth with ChangeNotifier {
       if (res['message'] != null) {
         throw HttpException(res['message']);
       } else {
-        print(res);
         final tokenIn = res['token'];
         Map<String, dynamic> decodedToken = JwtDecoder.decode(tokenIn);
         _token = tokenIn;
@@ -101,7 +98,6 @@ class Auth with ChangeNotifier {
     final extractedUserData =
         json.decode(prefs.getString('userData')) as Map<String, Object>;
     final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
-    print("Expiry Date : $expiryDate");
     if (expiryDate.isBefore(DateTime.now())) {
       return false;
     }

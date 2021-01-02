@@ -36,7 +36,6 @@ class Orders with ChangeNotifier {
       final response = await http.get(url, headers: headers);
       final extractedData = json.decode(response.body);
       if (extractedData is List<dynamic>) {
-        print(extractedData);
         final List<OrderItem> loadedOrders = [];
         extractedData.forEach((order) {
           final List<CartItem> convertedProducts = [];
@@ -82,7 +81,6 @@ class Orders with ChangeNotifier {
         'qty': element.quantity
       });
     });
-    // print(convertedCartProds);
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium);
     final Map<String, dynamic> body = {
@@ -91,7 +89,6 @@ class Orders with ChangeNotifier {
       'amount': total,
       'orderItems': [...convertedCartProds]
     };
-    // print(position);
     final response =
         await http.post(url, body: json.encode(body), headers: headers);
     final res = json.decode(response.body);

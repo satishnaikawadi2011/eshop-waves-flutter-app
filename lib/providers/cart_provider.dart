@@ -7,10 +7,8 @@ class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
   Map<String, dynamic> _encodableItems = {};
   Future<void> getDataFromPrefs() async {
-    print("Inside prefs");
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('cartData')) {
-      print("Here no cart");
       _items = {};
       return;
     }
@@ -27,7 +25,6 @@ class Cart with ChangeNotifier {
     });
     _items = convertedCartData;
     notifyListeners();
-    print(_items);
     return;
   }
 
