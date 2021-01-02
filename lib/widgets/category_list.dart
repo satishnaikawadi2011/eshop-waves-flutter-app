@@ -3,7 +3,21 @@ import 'package:ecommerce_app/providers/category_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CategoryList extends StatelessWidget {
+class CategoryList extends StatefulWidget {
+  @override
+  _CategoryListState createState() => _CategoryListState();
+}
+
+class _CategoryListState extends State<CategoryList> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    Future.delayed(Duration.zero).then((_) {
+      Provider.of<Categories>(context, listen: false).fetchAndSetCats();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Category> categories = Provider.of<Categories>(context).categories;

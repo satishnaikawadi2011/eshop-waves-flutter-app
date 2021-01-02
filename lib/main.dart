@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/models/category.dart';
 import 'package:ecommerce_app/providers/auth_provider.dart';
 import 'package:ecommerce_app/providers/cart_provider.dart';
 import 'package:ecommerce_app/providers/category_provider.dart';
@@ -31,8 +32,17 @@ class MyApp extends StatelessWidget {
               update: (ctx, auth, prevProducts) => Products(
                   auth.token, prevProducts == null ? [] : prevProducts.items),
             ),
-            ChangeNotifierProvider.value(
-              value: Categories(),
+            ChangeNotifierProxyProvider<Auth, Categories>(
+              update: (ctx, auth, prevCats) => Categories(
+                  auth.token,
+                  prevCats == null
+                      ? [
+                          Category(
+                            id: 'c6',
+                            name: 'All',
+                          ),
+                        ]
+                      : prevCats.categories),
             ),
             ChangeNotifierProvider.value(
               value: Cart(),

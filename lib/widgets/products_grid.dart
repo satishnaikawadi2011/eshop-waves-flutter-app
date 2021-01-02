@@ -16,22 +16,26 @@ class ProductsGrid extends StatelessWidget {
           .where((element) => element.categoryId == active)
           .toList();
     }
-    return GridView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.all(10.0),
-      itemCount: loadedProducts.length,
-      itemBuilder: (context, i) => ProductItem(
-        id: loadedProducts[i].id,
-        image: loadedProducts[i].image,
-        title: loadedProducts[i].title,
-        price: loadedProducts[i].price,
-      ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 2 / 3,
-        crossAxisSpacing: 10.0,
-        mainAxisSpacing: 10.0,
-      ),
-    );
+    return loadedProducts.length == 0
+        ? Center(
+            child: Text("No Products Found !!"),
+          )
+        : GridView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(10.0),
+            itemCount: loadedProducts.length,
+            itemBuilder: (context, i) => ProductItem(
+              id: loadedProducts[i].id,
+              image: loadedProducts[i].image,
+              title: loadedProducts[i].title,
+              price: loadedProducts[i].price,
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 2 / 3,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 10.0,
+            ),
+          );
   }
 }
